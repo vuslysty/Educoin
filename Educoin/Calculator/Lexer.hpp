@@ -21,13 +21,12 @@ struct transitionL
 
 class Lexer {
 
-    int                 state;
-
-    bool                stop;
-    unsigned int        carret;
-    unsigned int        startToken;
+    int                 state = 0;
+    bool                stop = false;
+    unsigned int        carret = 0;
+    unsigned int        startToken = 0;
     std::string         inputStr;
-    std::list<Token>    tokens;
+    std::list<Token>    *tokens;
 
     bool	whiteCondition(const char c) const;
     bool	numCondition(const char c) const;
@@ -45,18 +44,15 @@ class Lexer {
     void    errorFS();
 
     int     getCondition() const;
+    void    initBeforeWork(std::list<Token> *list, std::string const &str);
 
     static const Conditions     conditions[CONDITION_COUNT];
     static const transitionL    fsmTable[4][7];
 
 public:
 
-    Lexer(std::string str) : state(0), stop(false), carret(0),
-                            startToken(0), inputStr(str)
-    {}
-
-    void                doLexAnalization();
-    std::list<Token>    &getTokenList() { return tokens; }
+    void                doLexAnalization(std::list<Token> *list, std::string const &str);
+    std::list<Token>    *getTokenList() { return tokens; }
     std::string         getStr() const { return inputStr; }
 };
 

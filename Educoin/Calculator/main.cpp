@@ -1,21 +1,19 @@
 #include "Lexer.hpp"
+#include "Parser.hpp"
+#include "Executor.hpp"
 
 int main() {
-    Lexer lexer("----2+4-56(0  $3 )   $0");
+    Executor executor;
 
-    lexer.doLexAnalization();
-    
-    std::cout << lexer.getStr() << std::endl;
+    std::string expr = "2+2*2-4/2*2";
 
-    std::list<Token> &list = lexer.getTokenList();
+    executor.executeExpression(expr);
+    std::cout << executor.executeExpression(expr) << std::endl;
 
-    list.emplace_front(OpenScope);
-    list.emplace_back(CloseScope);
-
-    for (auto e : list) {
-        std::cout << strToken[e.getToken()] << " ";
-    }
-    std::cout << std::endl;
+    // for (auto e : list) {
+    //     std::cout << strToken[e.getToken()] << " ";
+    // }
+    // std::cout << std::endl;
 
     return 0;
 }

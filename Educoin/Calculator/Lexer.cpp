@@ -2,6 +2,15 @@
 
 void Lexer::errorFS() {
     std::cout << "ERROOOOR" << std::endl;
+	std::string error_pointer(inputStr.size(), ' ');
+	error_pointer[startToken] = '^';
+
+	for (int i = startToken + 1; i <= carret; i++)
+		error_pointer[i] = '~';
+
+	std::cout << inputStr << std::endl;
+	std::cout << error_pointer << std::endl;
+
     exit(1);
 }
 
@@ -15,12 +24,23 @@ int Lexer::getCondition() const
 	return (i);
 }
 
-void Lexer::doLexAnalization()
+void Lexer::initBeforeWork(std::list<Token> *list, std::string const &str) {
+	state = 0;
+	stop = false;
+	carret = 0;
+	startToken = 0;
+
+	tokens = list;
+	inputStr = str;
+}
+
+void Lexer::doLexAnalization(std::list<Token> *list, std::string const &str)
 {
 	transitionL_callback	funk = nullptr;
 	int 					condition = 0;
 
-	state = 0;
+	initBeforeWork(list, str);
+	
 	while (!stop)
 	{
         if (state == 0)
@@ -69,9 +89,7 @@ const transitionL	Lexer::fsmTable[4][7] = {
 		[3][0] = {0, &Lexer::varFS},
 		[3][1] = {0, &Lexer::errorFS},
 		[3][2] = {0, &Lexer::errorFS},
-		[3][3] = {0, &Lexer::varFS},
-		[3][4] = {0, &Lexer::errorFS},
-		[3][5] = {0, &Lexer::varFS},
+		[3][3 ... 5] = {0, &Lexer::varFS},
 		[3][6] = {0, &Lexer::errorFS}
 //--------------------   END   ----------------------------------------
 };
