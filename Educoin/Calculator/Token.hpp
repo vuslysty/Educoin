@@ -3,8 +3,6 @@
 
 #include "Calculator.hpp"
 
-
-
 class Token {
     eToken          token;
     std::string     sValue;

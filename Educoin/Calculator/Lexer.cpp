@@ -5,7 +5,7 @@ void Lexer::errorFS() {
 	std::string error_pointer(inputStr.size(), ' ');
 	error_pointer[startToken] = '^';
 
-	for (int i = startToken + 1; i <= carret; i++)
+	for (unsigned int i = startToken + 1; i <= carret; i++)
 		error_pointer[i] = '~';
 
 	std::cout << inputStr << std::endl;
