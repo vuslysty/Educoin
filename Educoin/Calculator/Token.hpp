@@ -1,7 +1,21 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
 
-#include "Calculator.hpp"
+#include <iostream>
+#include <string>
+
+enum eToken {
+  NUM,
+  VAR,
+  PLUS,
+  MIN,
+  DIV,
+  MULT,
+  MOD,
+  OpenScope,
+  CloseScope,
+  LastIdentifier
+};
 
 class Token {
   eToken token;

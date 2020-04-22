@@ -2,6 +2,7 @@
 #define LEXER_HPP
 
 #include "Token.hpp"
+#include <list>
 
 #define CONDITION_COUNT 6
 #define STATE_COUNT 4

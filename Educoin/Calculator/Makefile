@@ -15,8 +15,7 @@ SRCS = 	Executor.cpp\
 
 OBJS = $(SRCS:.cpp=.o)
 
-INC =	Calculator.hpp\
-		Executor.hpp\
+INC =	Executor.hpp\
 		Lexer.hpp\
 		Parser.hpp\
 		Token.hpp
@@ -26,11 +25,12 @@ all: cppcheck $(NAME)
 
 .PHONY : cppcheck
 cppcheck:
-	cppcheck --error-exitcode=1 --std=c++11 --language=c++ $(SRCS) $(INC)
+	cppcheck --error-exitcode=1 --std=c++11 --language=c++ $(SRCS) $(INC) 
 
 .PHONY : clang-tidy
 clang-tidy:
-	clang-tidy $(SRCS) $(INC)
+	clang-tidy Executor.cpp
+# $(SRCS) $(INC)
 
 .PHONY : clang-format
 clang-format:
