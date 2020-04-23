@@ -3,54 +3,54 @@
 void Lexer::numFS() {
   std::string num;
 
-  num.assign(inputStr, startToken, carret - startToken);
-  tokens->emplace_back(NUM, num);
+  num.assign(_input_str, _start_token, _carret - _start_token);
+  _tokens->emplace_back(NUM, num);
 
-  carret--;
+  _carret--;
 }
 
 void Lexer::varFS() {
   std::string num;
 
-  num.assign(inputStr, startToken + 1, 1);
-  tokens->emplace_back(VAR, num);
+  num.assign(_input_str, _start_token + 1, 1);
+  _tokens->emplace_back(VAR, num);
 
-  carret--;
+  _carret--;
 }
 
 void Lexer::operationFS() {
-  char op = inputStr[carret];
+  char op = _input_str[_carret];
 
   switch (op) {
     case '+':
-      tokens->emplace_back(PLUS);
+      _tokens->emplace_back(PLUS);
       break;
     case '-':
-      tokens->emplace_back(MIN);
+      _tokens->emplace_back(MIN);
       break;
     case '/':
-      tokens->emplace_back(DIV);
+      _tokens->emplace_back(DIV);
       break;
     case '*':
-      tokens->emplace_back(MULT);
+      _tokens->emplace_back(MULT);
       break;
     case '%':
-      tokens->emplace_back(MOD);
+      _tokens->emplace_back(MOD);
       break;
   }
 }
 
 void Lexer::scopeFS() {
-  char scope = inputStr[carret];
+  char scope = _input_str[_carret];
 
   switch (scope) {
     case '(':
-      tokens->emplace_back(OpenScope);
+      _tokens->emplace_back(OpenScope);
       break;
     case ')':
-      tokens->emplace_back(CloseScope);
+      _tokens->emplace_back(CloseScope);
       break;
   }
 }
 
-void Lexer::endFS() { stop = true; }
+void Lexer::endFS() { _stop = true; }

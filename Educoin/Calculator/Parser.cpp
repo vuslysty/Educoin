@@ -1,29 +1,29 @@
 #include "Parser.hpp"
 
 void Parser::initBeforeWork(std::list<Token> *t) {
-  state = 0;
-  stop = false;
-  openScopeCounter = 0;
-  closeScopeCounter = 0;
+  _state = 0;
+  _stop = false;
+  _open_scope_counter = 0;
+  _close_scope_counter = 0;
 
-  tokens = t;
+  _tokens_list = t;
   t->emplace_front(OpenScope);
   t->emplace_back(CloseScope);
   t->emplace_back(LastIdentifier);
-  carret = t->begin();
+  _carret = t->begin();
 }
 
 void Parser::doParsingAnalization(std::list<Token> *t) {
-  transitionP_callback funk = nullptr;
+  TransitionPCallback funk = nullptr;
   eToken condition;
 
   initBeforeWork(t);
-  tokens = t;
-  carret = t->begin();
-  while (!stop) {
-    condition = (*carret).getToken();
-    funk = fsmTable[state][condition].worker;
-    state = fsmTable[state][condition].newState;
+  _tokens_list = t;
+  _carret = t->begin();
+  while (!_stop) {
+    condition = (*_carret).getToken();
+    funk = kFsmTable[_state][condition].worker;
+    _state = kFsmTable[_state][condition].newState;
 
     if (funk) (this->*funk)();
 
@@ -31,7 +31,7 @@ void Parser::doParsingAnalization(std::list<Token> *t) {
   }
 }
 
-const transitionP Parser::fsmTable[5][LastIdentifier + 1] = {
+const TransitionP Parser::kFsmTable[5][LastIdentifier + 1] = {
     //-------------------- STATE 0 ----------------------------------------
     [0][0 ... 1] = {3, nullptr},
     [0][2 ... 6] = {4, nullptr},

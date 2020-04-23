@@ -1,26 +1,27 @@
-#ifndef PARSER_HPP
+#ifndef PARSER_HPP //NOLINT
 #define PARSER_HPP
 
 #include "Lexer.hpp"
 
 class Parser;
 
-typedef void (Parser::*transitionP_callback)();
+// typedef void (Parser::*transitionP_callback)();
+using TransitionPCallback = void (Parser::*)();
 
-struct transitionP {
+struct TransitionP {
   int newState;
-  transitionP_callback worker;
+  TransitionPCallback worker;
 };
 
 class Parser {
-  int state = 0;
-  bool stop = false;
+  int _state{0};
+  bool _stop{false};
 
-  int openScopeCounter = 0;
-  int closeScopeCounter = 0;
+  int _open_scope_counter{0};
+  int _close_scope_counter{0};
 
-  std::list<Token> *tokens = nullptr;
-  std::list<Token>::iterator carret;
+  std::list<Token> *_tokens_list{nullptr};
+  std::list<Token>::iterator _carret;
 
   void addZeroFS();
   void exitFS();
@@ -31,7 +32,7 @@ class Parser {
 
   void initBeforeWork(std::list<Token> *t);
 
-  static const transitionP fsmTable[5][LastIdentifier + 1];
+  static const TransitionP kFsmTable[5][LastIdentifier + 1];
 
  public:
   void doParsingAnalization(std::list<Token> *t);

@@ -1,17 +1,17 @@
 #include "Parser.hpp"
 
 void Parser::addZeroFS() {
-  tokens->insert(carret, {NUM, "0"});
+  _tokens_list->insert(_carret, Token(NUM, "0"));
   moveCarretBack();
 }
 
 void Parser::exitFS() {
-  if (openScopeCounter != closeScopeCounter) {
+  if (_open_scope_counter != _close_scope_counter) {
     std::cout << "Problem with scopes!!" << std::endl;
     exit(1);
   }
-  tokens->pop_back();
-  stop = true;
+  _tokens_list->pop_back();
+  _stop = true;
 }
 
 void Parser::errorFS() {
@@ -19,12 +19,12 @@ void Parser::errorFS() {
   exit(1);
 }
 
-void Parser::moveCarretBack() { --carret; }
-void Parser::moveCarretForward() { ++carret; }
+void Parser::moveCarretBack() { --_carret; }
+void Parser::moveCarretForward() { ++_carret; }
 
 void Parser::scopeCounter() {
-  if ((*carret).getToken() == OpenScope)
-    openScopeCounter++;
-  else if ((*carret).getToken() == CloseScope)
-    closeScopeCounter++;
+  if ((*_carret).getToken() == OpenScope)
+    _open_scope_counter++;
+  else if ((*_carret).getToken() == CloseScope)
+    _close_scope_counter++;
 }

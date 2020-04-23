@@ -1,8 +1,10 @@
 NAME = calculator
 
+TESTER_DIR = ./Tester/
+
 COMPILER = clang++
 
-LINK_FLAGS =
+LINK_FLAGS = -fsanitize=address,undefined
 BUILD_FLAGS = -std=c++11 -Wall -Wextra -Werror
 
 SRCS = 	Executor.cpp\
@@ -21,7 +23,8 @@ INC =	Executor.hpp\
 		Token.hpp
 
 .PHONY : all
-all: cppcheck $(NAME)
+all: $(NAME)
+	make -C $(TESTER_DIR)
 
 .PHONY : cppcheck
 cppcheck:
@@ -29,8 +32,7 @@ cppcheck:
 
 .PHONY : clang-tidy
 clang-tidy:
-	clang-tidy Executor.cpp
-# $(SRCS) $(INC)
+	clang-tidy main.cpp --
 
 .PHONY : clang-format
 clang-format:
@@ -44,7 +46,7 @@ $(NAME) : $(OBJS)
 # Because FSMs in these files look prettier when used with C99 feature.
 #########################################
 Lexer.o: Lexer.cpp $(INC)
-	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS)
+	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS) 
 
 Parser.o: Parser.cpp $(INC)
 	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS)
@@ -56,10 +58,12 @@ Parser.o: Parser.cpp $(INC)
 .PHONY : clean
 clean:
 	rm -f $(OBJS)
+	make clean -C $(TESTER_DIR)
 
 .PHONY : fclean
 fclean: clean
 	rm -f $(NAME)
+	make fclean -C $(TESTER_DIR)
 
 .PHONY : re
 re: fclean all

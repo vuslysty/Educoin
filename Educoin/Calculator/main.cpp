@@ -5,7 +5,7 @@ void run() {
   std::string expression;
   int_fast64_t res;
 
-  while (1) {
+  while (true) {
     std::getline(std::cin, expression, '\n');
     if (std::cin.eof()) {
       std::cout << "Bye" << std::endl;

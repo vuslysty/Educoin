@@ -1,25 +1,25 @@
 #include "Executor.hpp"
 
-void Executor::doOperation(std::list<Token>::iterator &op) {
+void Executor::doOperation(std::list<Token>::iterator *op) {
   std::list<Token>::iterator firstElem;
   std::list<Token>::iterator secondElem;
 
-  firstElem = op, --firstElem;
-  secondElem = op, ++secondElem;
+  firstElem = *op, --firstElem;
+  secondElem = *op, ++secondElem;
 
-  if (op->getToken() == PLUS)
+  if ((*op)->getToken() == PLUS)
     firstElem->getNValue() += secondElem->getNValue();
-  else if (op->getToken() == MIN)
+  else if ((*op)->getToken() == MIN)
     firstElem->getNValue() -= secondElem->getNValue();
-  else if (op->getToken() == DIV)
+  else if ((*op)->getToken() == DIV)
     firstElem->getNValue() /= secondElem->getNValue();
-  else if (op->getToken() == MULT)
+  else if ((*op)->getToken() == MULT)
     firstElem->getNValue() *= secondElem->getNValue();
-  else if (op->getToken() == MOD)
+  else if ((*op)->getToken() == MOD)
     firstElem->getNValue() %= secondElem->getNValue();
 
-  list.erase(op, ++secondElem);
-  op = firstElem;
+  _list.erase(*op, ++secondElem);
+  *op = firstElem;
 }
 
 void Executor::computeByPriority(std::list<Token>::iterator begin,
@@ -29,7 +29,7 @@ void Executor::computeByPriority(std::list<Token>::iterator begin,
   // Compute all first priority operations
   while (iter != end) {
     eToken t = iter->getToken();
-    if (t == DIV || t == MULT || t == MOD) doOperation(iter);
+    if (t == DIV || t == MULT || t == MOD) doOperation(&iter);
     ++iter;
   }
 
@@ -37,13 +37,13 @@ void Executor::computeByPriority(std::list<Token>::iterator begin,
   iter = begin;
   while (iter != end) {
     eToken t = iter->getToken();
-    if (t == PLUS || t == MIN) doOperation(iter);
+    if (t == PLUS || t == MIN) doOperation(&iter);
     ++iter;
   }
 
   iter = begin, ++iter;
   std::swap(*begin, *iter);
-  list.erase(iter, end);
+  _list.erase(iter, end);
 }
 
 typedef std::tuple<bool, std::list<Token>::iterator, std::list<Token>::iterator>
@@ -93,16 +93,16 @@ void Executor::recursiveExecute(std::list<Token>::iterator begin,
 }
 
 void Executor::saveValueInBuf(int_fast64_t val) {
-  cicle_buf[positionForSave] = val;
-  positionForSave++;
-  if (positionForSave >= 10) positionForSave = 0;
+  _cicle_buf[_position_for_save] = val;
+  _position_for_save++;
+  if (_position_for_save >= 10) _position_for_save = 0;
 }
 
 void Executor::changeVarsToNums() {
-  for (Token &t : list) {
+  for (Token &t : _list) {
     if (t.getToken() == VAR) {
       uint8_t index = t.getNValue();
-      Token tmp(NUM, std::to_string(cicle_buf[index]));
+      Token tmp(NUM, std::to_string(_cicle_buf[index]));
       std::swap(t, tmp);
     }
   }
@@ -111,14 +111,14 @@ void Executor::changeVarsToNums() {
 int_fast64_t Executor::executeExpression(std::string const &expr) {
   int_fast64_t result;
 
-  list.clear();
-  lexer.doLexAnalization(&list, expr);
-  parser.doParsingAnalization(&list);
+  _list.clear();
+  _lexer.doLexAnalization(&_list, expr);
+  _parser.doParsingAnalization(&_list);
   changeVarsToNums();
 
-  recursiveExecute(list.begin(), list.end());
+  recursiveExecute(_list.begin(), _list.end());
 
-  result = list.front().getNValue();
+  result = _list.front().getNValue();
   saveValueInBuf(result);
 
   return result;

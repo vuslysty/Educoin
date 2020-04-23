@@ -1,19 +1,19 @@
 #include "Lexer.hpp"
 
-bool Lexer::whiteCondition(const char c) const {
+bool Lexer::whiteCondition(char c) const {
   return (c == '\t' || c == ' ');
 }
 
-bool Lexer::numCondition(const char c) const { return (isdigit(c)); }
+bool Lexer::numCondition(char c) const { return (isdigit(c)); }
 
-bool Lexer::varCondition(const char c) const { return (c == '$'); }
+bool Lexer::varCondition(char c) const { return (c == '$'); }
 
-bool Lexer::operationCondition(const char c) const {
+bool Lexer::operationCondition(char c) const {
   return (c == '+' || c == '-' || c == '/' || c == '*' || c == '%');
 }
 
-bool Lexer::ScopeCondition(const char c) const {
+bool Lexer::scopeCondition(char c) const {
   return (c == '(' || c == ')');
 }
 
-bool Lexer::zeroCondition(const char c) const { return (c == '\0'); }
+bool Lexer::zeroCondition(char c) const { return (c == '\0'); }

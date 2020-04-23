@@ -2,13 +2,13 @@
 
 void Lexer::errorFS() {
   std::cout << "ERROOOOR" << std::endl;
-  std::string error_pointer(inputStr.size(), ' ');
-  error_pointer[startToken] = '^';
+  std::string error_pointer(_input_str.size(), ' ');
+  error_pointer[_start_token] = '^';
 
-  for (unsigned int i = startToken + 1; i <= carret; i++)
+  for (unsigned int i = _start_token + 1; i <= _carret; i++)
     error_pointer[i] = '~';
 
-  std::cout << inputStr << std::endl;
+  std::cout << _input_str << std::endl;
   std::cout << error_pointer << std::endl;
 
   exit(1);
@@ -18,45 +18,45 @@ int Lexer::getCondition() const {
   int i;
 
   for (i = 0; i < CONDITION_COUNT; i++)
-    if ((this->*conditions[i])(inputStr[carret])) break;
+    if ((this->*kConditions[i])(_input_str[_carret])) break;
   return (i);
 }
 
 void Lexer::initBeforeWork(std::list<Token> *list, std::string const &str) {
-  state = 0;
-  stop = false;
-  carret = 0;
-  startToken = 0;
+  _state = 0;
+  _stop = false;
+  _carret = 0;
+  _start_token = 0;
 
-  tokens = list;
-  inputStr = str;
+  _tokens = list;
+  _input_str = str;
 }
 
 void Lexer::doLexAnalization(std::list<Token> *list, std::string const &str) {
-  transitionL_callback funk = nullptr;
+  TransitionLCallback funk = nullptr;
   int condition = 0;
 
   initBeforeWork(list, str);
 
-  while (!stop) {
-    if (state == 0) startToken = carret;
+  while (!_stop) {
+    if (_state == 0) _start_token = _carret;
 
     condition = getCondition();
-    funk = fsmTable[state][condition].worker;
+    funk = kFsmTable[_state][condition].worker;
 
     if (funk) (this->*funk)();
 
-    state = fsmTable[state][condition].newState;
+    _state = kFsmTable[_state][condition].newState;
 
-    carret++;
+    _carret++;
   }
 }
 
-const Conditions Lexer::conditions[CONDITION_COUNT] = {
+const Conditions Lexer::kConditions[CONDITION_COUNT] = {
     &Lexer::whiteCondition,     &Lexer::numCondition,   &Lexer::varCondition,
-    &Lexer::operationCondition, &Lexer::ScopeCondition, &Lexer::zeroCondition};
+    &Lexer::operationCondition, &Lexer::scopeCondition, &Lexer::zeroCondition};
 
-const transitionL Lexer::fsmTable[4][7] = {
+const TransitionL Lexer::kFsmTable[4][7] = {
     //-------------------- STATE 0 ----------------------------------------
     [0][0] = {0, nullptr},
     [0][1] = {1, nullptr},

@@ -1,4 +1,4 @@
-#ifndef LEXER_HPP
+#ifndef LEXER_HPP //NOLINT
 #define LEXER_HPP
 
 #include "Token.hpp"
@@ -9,28 +9,31 @@
 
 class Lexer;
 
-typedef bool (Lexer::*Conditions)(const char c) const;
-typedef void (Lexer::*transitionL_callback)();
+// typedef bool (Lexer::*Conditions)(const char c) const;
+using Conditions = bool (Lexer::*)(const char) const;
+// typedef void (Lexer::*transitionL_callback)();
+using TransitionLCallback = void (Lexer::*)();
 
-struct transitionL {
+
+struct TransitionL {
   int newState;
-  transitionL_callback worker;
+  TransitionLCallback worker;
 };
 
 class Lexer {
-  int state = 0;
-  bool stop = false;
-  unsigned int carret = 0;
-  unsigned int startToken = 0;
-  std::string inputStr;
-  std::list<Token> *tokens;
+  int _state{0};
+  bool _stop{false};
+  unsigned int _carret{0};
+  unsigned int _start_token{0};
+  std::list<Token> *_tokens{nullptr};
+  std::string _input_str;
 
-  bool whiteCondition(const char c) const;
-  bool numCondition(const char c) const;
-  bool varCondition(const char c) const;
-  bool operationCondition(const char c) const;
-  bool ScopeCondition(const char c) const;
-  bool zeroCondition(const char c) const;
+  bool whiteCondition(char c) const;
+  bool numCondition(char c) const;
+  bool varCondition(char c) const;
+  bool operationCondition(char c) const;
+  bool scopeCondition(char c) const;
+  bool zeroCondition(char c) const;
 
   void numFS();
   void varFS();
@@ -43,13 +46,14 @@ class Lexer {
   int getCondition() const;
   void initBeforeWork(std::list<Token> *list, std::string const &str);
 
-  static const Conditions conditions[CONDITION_COUNT];
-  static const transitionL fsmTable[4][7];
+  static const Conditions kConditions[CONDITION_COUNT];
+  static const TransitionL kFsmTable[4][7];
 
  public:
+
   void doLexAnalization(std::list<Token> *list, std::string const &str);
-  std::list<Token> *getTokenList() { return tokens; }
-  std::string getStr() const { return inputStr; }
+  std::list<Token> *getTokenList() { return _tokens; }
+  std::string getStr() const { return _input_str; }
 };
 
 #endif  // LEXER_HPP
