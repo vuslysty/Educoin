@@ -6,4 +6,4 @@ stages:
 test:
   stage: test
   script:
-    - make
+    - make -C ./Calculator
