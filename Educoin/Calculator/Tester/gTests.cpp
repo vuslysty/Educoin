@@ -66,6 +66,10 @@ TEST(Calculator, hard_test0) {
   EXPECT_EQ(calc.getResult("   -(-(-(-(-(-42)))))"), "42");
 }
 
+TEST(Calculator, hard_test1) {
+  EXPECT_EQ(calc.getResult("(+42-10+11235123/5-3/10-(234)*1234/(-12345))/10"), "224707");
+}
+
 int main(int argc, char **argv) {
   printf("Running main() from gTest.cpp\n");
 

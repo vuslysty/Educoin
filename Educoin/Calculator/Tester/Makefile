@@ -19,9 +19,6 @@ INC =	gTests.hpp
 all : cppcheck $(TESTS)
 	./$(TESTS)
 
-targ_googletest: 
-	@if [ ! -d googletest ]; then git clone https://github.com/google/googletest; fi
-
 clean :
 	rm -fr gtest.a gtest_main.a *.o
 

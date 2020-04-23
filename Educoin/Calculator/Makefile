@@ -1,6 +1,6 @@
 NAME = calculator
 
-TESTER_DIR = ./Tester/
+TESTER_DIR = ./Tester
 
 COMPILER = clang++
 
@@ -23,8 +23,14 @@ INC =	Executor.hpp\
 		Token.hpp
 
 .PHONY : all
-all: $(NAME)
+all: $(NAME) googletest
 	make -C $(TESTER_DIR)
+
+.PHONY : googletest
+googletest: 
+	@if [ ! -d $(TESTER_DIR)/googletest ]; then \
+		git clone https://github.com/google/googletest $(TESTER_DIR)/googletest ; \
+	fi
 
 .PHONY : cppcheck
 cppcheck:
