@@ -1,1 +1,2 @@
 # Educoin
+Learning project

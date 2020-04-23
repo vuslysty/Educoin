@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-Calculator calc("/home/vlad/cpp_learn/Educoin/Calculator/calculator");
+Calculator calc("../calculator");
 
 TEST(Calculator, simple_test0) { EXPECT_EQ(calc.getResult("2"), "2"); }
 
