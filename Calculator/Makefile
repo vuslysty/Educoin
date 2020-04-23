@@ -2,7 +2,7 @@ NAME = calculator
 
 TESTER_DIR = ./Tester
 
-COMPILER = clang++
+COMPILER = clang++-6.0			
 
 LINK_FLAGS = -fsanitize=address,undefined
 BUILD_FLAGS = -std=c++11 -Wall -Wextra -Werror

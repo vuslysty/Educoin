@@ -2,8 +2,10 @@ TESTS = gTests
 
 GTEST_DIR = ./googletest/googletest
 
-LINK_FLAGS =  -lboost_iostreams -lboost_filesystem -pthread
+LINK_FLAGS =  -lboost_iostreams -lboost_filesystem -lpthread -lboost_system
 LINK_FLAGS += -fsanitize=address,undefined
+
+COMPILER = clang++-6.0
 
 
 CPPFLAGS += -isystem $(GTEST_DIR)/include
@@ -26,11 +28,11 @@ fclean : clean
 	rm -fr $(TESTS)
 
 gtest-all.o : $(GTEST_SRCS_)
-	clang++ $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+	$(COMPILER) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
             $(GTEST_DIR)/src/gtest-all.cc
 
 gtest_main.o : $(GTEST_SRCS_)
-	clang++ $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+	$(COMPILER) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
             $(GTEST_DIR)/src/gtest_main.cc
 
 gtest.a : gtest-all.o
@@ -40,10 +42,10 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
 gTests.o: gTests.cpp gTests.hpp $(GTEST_HEADERS)
-	clang++ -c gTests.cpp -o gTests.o $(CXXFLAGS) $(CPPFLAGS)
+	$(COMPILER) -c gTests.cpp -o gTests.o $(CXXFLAGS) $(CPPFLAGS)
 
 $(TESTS): gTests.o gtest_main.a
-	clang++ $^ -o $@ $(LINK_FLAGS)
+	$(COMPILER) $^ -o $@ $(LINK_FLAGS)
 
 .PHONY : cppcheck
 cppcheck:
