@@ -1,1 +1,9 @@
 image: vyo2003/ubuntu-boost
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - make
