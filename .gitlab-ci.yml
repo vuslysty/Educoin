@@ -1,0 +1,11 @@
+image: vyo2003/ubuntu-boost
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - apt update -y
+    - apt install -y git build-essential clang cppcheck clang-tidy
+    - make -C ./Calculator
