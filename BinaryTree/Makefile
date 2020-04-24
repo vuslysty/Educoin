@@ -1,4 +1,5 @@
 TESTS = gTests
+NAME = binarySort
 
 GTEST_DIR = ../googletest/googletest
 
@@ -18,8 +19,11 @@ SRCS =	gTests.cpp
 
 INC =	BinaryTree.hpp
 
-all : cppcheck clang-tidy $(TESTS)
+all : cppcheck clang-tidy $(NAME) $(TESTS)
 	./$(TESTS)
+
+$(NAME): $(INC) binaryTreeSort.cpp
+	$(COMPILER) -o $(NAME) binaryTreeSort.cpp $(CXXFLAGS)
 
 clean :
 	rm -fr gtest.a gtest_main.a *.o
@@ -53,7 +57,7 @@ cppcheck:
 
 .PHONY : clang-format
 clang-format:
-	clang-format --style=file -i $(INC)
+	clang-format --style=file -i $(INC) binaryTreeSort.cpp
 
 .PHONY : clang-tidy
 clang-tidy:
