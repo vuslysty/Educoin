@@ -1,11 +1,28 @@
 image: vyo2003/ubuntu-boost
 
 stages:
+  - pre_build
   - test
 
-test:
+pre_build:
+  stage: pre_build
+  script:
+    - apt install git -y
+    - git clone https://github.com/google/googletest
+  artifacts:
+    paths:
+      - googletest/
+
+calculator_test:
   stage: test
   script:
     - apt update -y
-    - apt install -y git build-essential clang cppcheck clang-tidy
+    - apt install -y build-essential clang cppcheck clang-tidy
     - make -C ./Calculator
+
+binary_tree_test:
+  stage: test
+  script:
+    - apt update -y
+    - apt install -y build-essential clang cppcheck clang-tidy
+    - make -C ./BinaryTree
