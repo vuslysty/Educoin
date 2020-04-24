@@ -1,6 +1,6 @@
 #include <iostream>
 
-    const int N = 10;
+const int N = 100;
 
 int *needed_place(int *start, int *end) {
     bool check_ringt = true;
