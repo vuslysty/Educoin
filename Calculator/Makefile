@@ -23,7 +23,7 @@ INC =	Executor.hpp\
 		Token.hpp
 
 .PHONY : all
-all: $(NAME) googletest
+all: $(NAME)
 	make -C $(TESTER_DIR)
 
 .PHONY : googletest

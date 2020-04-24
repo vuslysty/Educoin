@@ -1,6 +1,6 @@
 TESTS = gTests
 
-GTEST_DIR = ./googletest/googletest
+GTEST_DIR = ../../googletest/googletest
 
 LINK_FLAGS =  -lboost_iostreams -lboost_filesystem -lpthread -lboost_system
 LINK_FLAGS += -fsanitize=address,undefined
