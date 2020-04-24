@@ -26,3 +26,11 @@ binary_tree_test:
     - apt update -y
     - apt install -y build-essential clang cppcheck clang-tidy
     - make -C ./BinaryTree
+
+mult_matrix_test:
+  stage: test
+  script:
+    - apt update -y
+    - apt install -y build-essential clang
+    - make -C ./MultMatrix
+    - ./MultMatrix/mult_matrix
