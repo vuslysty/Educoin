@@ -1,26 +1,17 @@
-NAME = calculator
+NAME = bucketSorter
 
 TESTER_DIR = ./Tester
 
 COMPILER = clang++-6.0			
 
 LINK_FLAGS = -fsanitize=address,undefined
-BUILD_FLAGS = -std=c++11 -Wall -Wextra -Werror
+BUILD_FLAGS = -std=c++11 -Wall -Wextra -Werror -pedantic -g
 
-SRCS = 	Executor.cpp\
-		LexConditions.cpp\
-		Lexer.cpp\
-		LexFiniteStates.cpp\
-		Parser.cpp\
-		ParsFiniteStates.cpp\
-		main.cpp
+SRCS =  main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-INC =	Executor.hpp\
-		Lexer.hpp\
-		Parser.hpp\
-		Token.hpp
+INC =	BucketSort.hpp
 
 .PHONY : all
 all: cppcheck clang-tidy $(NAME)
@@ -48,18 +39,8 @@ clang-format:
 $(NAME) : $(OBJS)
 	$(COMPILER) -o $(NAME) $(OBJS) $(LINK_FLAGS)
 
-# Lexer and Parser will compile without -pedantic key.
-# Because FSMs in these files look prettier when used with C99 feature.
-#########################################
-Lexer.o: Lexer.cpp $(INC)
-	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS) 
-
-Parser.o: Parser.cpp $(INC)
-	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS)
-##########################################
-
 %.o: %.cpp $(INC)
-	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS) -pedantic
+	$(COMPILER) -o $@ -c $< $(BUILD_FLAGS)
 
 .PHONY : clean
 clean:
