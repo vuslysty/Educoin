@@ -33,3 +33,12 @@ bucket_sort_test:
     - apt update -y
     - apt install -y build-essential clang cppcheck clang-tidy
     - make -C ./BucketSort
+
+mult_matrix_test:
+  stage: test
+  script:
+    - apt update -y
+    - apt install -y build-essential clang
+    - make -C ./MultMatrix
+    - ./MultMatrix/mult_matrix
+
