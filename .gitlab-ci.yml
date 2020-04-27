@@ -26,3 +26,10 @@ binary_tree_test:
     - apt update -y
     - apt install -y build-essential clang cppcheck clang-tidy
     - make -C ./BinaryTree
+
+bucket_sort_test:
+  stage: test
+  script:
+    - apt update -y
+    - apt install -y build-essential clang cppcheck clang-tidy
+    - make -C ./BucketSort
