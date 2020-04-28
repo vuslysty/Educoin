@@ -22,7 +22,7 @@ std::vector<double> split(const std::string& s, char delimiter) {
 }
 
 int main() {
-  BucketSort sorter{};
+  BucketSorter sorter{};
   std::string line;
   std::vector<double> numbers;
 
@@ -30,16 +30,12 @@ int main() {
   numbers = split(line, ' ');
 
   if (!numbers.empty()) {
-    size_t max_collisions = sorter(numbers.data(), numbers.size());
 
-    for (size_t i = 0; i < numbers.size(); i++) {
-      if (i != 0u) {
-        std::cout << " ";
-      }
-      std::cout << numbers[i];  
+    for (double num : numbers) {
+      sorter.push(num);
     }
-    std::cout << std::endl;
-    std::cout << max_collisions << std::endl;
+    sorter.startSort();
+    sorter.printFormat();
   } else {
     std::cout << "Empty" << std::endl;
   }
