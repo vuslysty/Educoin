@@ -13,11 +13,11 @@ HashTable::HashTable(size_t size) : _size(size)
 HashTable::~HashTable() {}
 
 size_t HashTable::getHashSum(const std::string &src) {
-    size_t hashsum = 0;
+    size_t h = 0;
     for (char c : src) {
-        hashsum = (hashsum * 31) ^ static_cast<size_t>(c);
+        h = (h << 7) ^ (h >> 26) ^ static_cast<size_t>(c);
     }
-    return hashsum;
+    return h;
 }
 
 void HashTable::push(std::string const &str, bool enable_reapetes) {
@@ -33,6 +33,24 @@ void HashTable::push(std::string const &str, bool enable_reapetes) {
 
     _count++;
     _table[index].push_back({hash_sum, str});
+
+    if (_count > _size) {
+        resizeBuckets(_size * 2);
+    }
+}
+
+void HashTable::resizeBuckets(size_t new_size) {
+    std::vector<std::vector<content_t> > new_table;
+    
+    new_table.resize(new_size);
+    for (auto bucket : _table) {
+        for (auto content : bucket) {
+            size_t index = content.first % new_size;
+            new_table[index].push_back(std::move(content));
+        }
+    }
+    _table = std::move(new_table);
+    _size = new_size;
 }
 
 void HashTable::print() const {
@@ -132,22 +150,28 @@ static T const *find(T const &target, T const *start, T const *end,
 
 std::string const *HashTable::findElement(std::string const &str) const {
     size_t hash_sum = getHashSum(str);
-    content_t cont;
+    // content_t cont;
 
-    cont.first = hash_sum;
-    cont.second = str;
+    // cont.first = hash_sum;
+    // cont.second = str;
 
     if (_table[hash_sum % _size].empty())
         return nullptr;
 
-    const content_t *array = _table[hash_sum % _size].data();
-    size_t array_size = _table[hash_sum % _size].size();
+    for (auto &table_cont : _table[hash_sum % _size]) {
+        if (table_cont.first == hash_sum)
+            return &table_cont.second;
+    }
+    return nullptr;
 
-    const content_t *res = find(cont, array, array + (array_size - 1),
-        [](content_t const &a, content_t const &b) { return a.first > b.first; },
-        [](content_t const &a, content_t const &b) { return a.first == b.first; });
+    // const content_t *array = _table[hash_sum % _size].data();
+    // size_t array_size = _table[hash_sum % _size].size();
 
-    return res ? &res->second : nullptr;
+    // const content_t *res = find(cont, array, array + (array_size - 1),
+    //     [](content_t const &a, content_t const &b) { return a.first > b.first; },
+    //     [](content_t const &a, content_t const &b) { return a.first == b.first; });
+
+    // return res ? &res->second : nullptr;
 }
 
 size_t HashTable::size() const {

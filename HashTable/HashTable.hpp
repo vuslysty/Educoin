@@ -5,12 +5,12 @@
 #include <string>
 #include <iostream>
 
-#define DEF_SIZE 20
+#define DEF_SIZE 32
 
 typedef std::pair<size_t, std::string> content_t;
 
 class HashTable {
-    size_t  _size{20};
+    size_t  _size{DEF_SIZE};
     std::vector<std::vector<content_t> > _table;
     size_t  _count{0};
 
@@ -30,6 +30,7 @@ public:
     std::string const *findElement(std::string const &str) const;
     
     size_t size() const;
+    void resizeBuckets(size_t new_size);
 
 };
 
